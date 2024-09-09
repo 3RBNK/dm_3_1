@@ -235,8 +235,6 @@ int main() {
     const vector<pair<int, int>> b = generate_relationship(f2);
     const vector<pair<int, int>> c = generate_relationship(f3);
 
-    print_relationship(a);
-
     const vector<pair<int, int>> comlement_a = complement_relationship(a, u);
     const vector<pair<int, int>> square_c = degree_relationship(c, 2);
     const vector<pair<int, int>> compose_a_b = compose_relationship(a, b);
