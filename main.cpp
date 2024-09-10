@@ -153,8 +153,7 @@ vector<pair<int, int>> reverse_relationship(const vector<pair<int, int>> &relati
     vector<pair<int, int>> result;
     for (auto v: relationship) {
         pair reverse_pr = {v.second, v.first};
-        if (include_pair(relationship, reverse_pr))
-            result.push_back(v);
+        result.push_back(reverse_pr)
     }
 
     return result;
