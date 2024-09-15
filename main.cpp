@@ -44,14 +44,6 @@ bool include_pair(const vector<pair<int, int>> &relationship, const pair<int, in
 }
 
 
-bool include_value(const vector<pair<int, int>> &relationship, const int val) {
-    for (const auto [fst, snd]: relationship)
-        if (fst == val || snd == val)
-            return true;
-    return false;
-}
-
-
 bool relationship_not_strictly_include(const vector<pair<int, int>> &relationship1,
                                        const vector<pair<int, int>> &relationship2) {
     for (auto pr: relationship1)
