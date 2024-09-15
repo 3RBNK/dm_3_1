@@ -24,15 +24,19 @@ bool f3(const int &x, const int &y) {
 
 void print_relationship(const vector<pair<int, int>> &relationship) {
     int new_line = 0;
-    for (const auto [fst, snd]: relationship)
-        if (new_line < 3) {
-            printf("(%2.d,%2.d)  |  ", fst, snd);
+    for (const auto [fst, snd]: relationship) {
+        if (new_line == 0) {
+            printf("\\shoveleft{");
+        }
+        if (new_line < 12) {
+            printf("(%d,%d), ", fst, snd);
             new_line++;
         } else {
             new_line = 0;
-            cout << endl;
+            cout << "} \\\\" << endl;
         }
-    cout << endl << endl;
+    }
+    cout << "\b\b \\} } \\\\" << endl << endl;
 }
 
 
@@ -41,6 +45,25 @@ bool include_pair(const vector<pair<int, int>> &relationship, const pair<int, in
         if (fst == pr.first && snd == pr.second)
             return true;
     return false;
+}
+
+
+bool include_value(const vector<pair<int, int>> &relationship, const int val) {
+    for (const auto [fst, snd]: relationship)
+        if (fst == val || snd == val)
+            return true;
+    return false;
+}
+
+
+vector<pair<int, int>> copy_relationship(const vector<pair<int, int>> &relationship) {
+    vector<pair<int, int>> result;
+    for (auto [fst, snd]: relationship) {
+        pair pr = {fst, snd};
+        result.push_back(pr);
+    }
+
+    return result;
 }
 
 
@@ -143,9 +166,9 @@ vector<pair<int, int>> complement_relationship(const vector<pair<int, int>> &rel
 
 vector<pair<int, int>> reverse_relationship(const vector<pair<int, int>> &relationship) {
     vector<pair<int, int>> result;
-    for (auto v: relationship) {
-        pair reverse_pr = {v.second, v.first};
-        result.push_back(reverse_pr)
+    for (auto [fst, snd]: relationship) {
+        pair reverse_pr = {snd, fst};
+        result.push_back(reverse_pr);
     }
 
     return result;
@@ -179,10 +202,11 @@ vector<pair<int, int>> degree_relationship(vector<pair<int, int>> relationship, 
     }
 
     if (degree > 1) {
+        vector<pair<int, int>> result = copy_relationship(relationship);
         for (auto i = 0; i < degree; i++)
-            relationship = compose_relationship(relationship, relationship);
-        relationship = dism(relationship);
-        return relationship;
+            result = compose_relationship(result, relationship);
+        result = dism(result);
+        return result;
     }
 
     vector<pair<int, int>> default_value;
