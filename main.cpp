@@ -23,20 +23,10 @@ bool f3(const int &x, const int &y) {
 
 
 void print_relationship(const vector<pair<int, int>> &relationship) {
-    int new_line = 0;
     for (const auto [fst, snd]: relationship) {
-        if (new_line == 0) {
-            printf("\\shoveleft{");
-        }
-        if (new_line < 12) {
-            printf("(%d,%d), ", fst, snd);
-            new_line++;
-        } else {
-            new_line = 0;
-            cout << "} \\\\" << endl;
-        }
+        cout << "(" << fst << ", " << snd << ")" << endl;
     }
-    cout << "\b\b \\} } \\\\" << endl << endl;
+    cout << endl << endl;
 }
 
 
