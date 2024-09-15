@@ -172,6 +172,7 @@ vector<pair<int, int>> compose_relationship(const vector<pair<int, int>> &relati
                 if (include_pair(relationship1, pr1) && include_pair(relationship2, pr2)) {
                     pair pr = {x, y};
                     result.push_back(pr);
+                    break;
                 }
             }
 
