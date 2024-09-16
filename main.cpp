@@ -5,31 +5,36 @@ using namespace std;
 
 const int m[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
+// Функция всегда возвращает true
 bool f(const int &x, const int &y) {
     return 1>0;
 }
 
+// Функция возвращает true, если x > y или y > 7
 bool f1(const int &x, const int &y) {
     return x > y || y > 7;
 }
 
+// Функция возвращает true, если число, составленное из 10*x + y, делится на 3
 bool f2(const int &x, const int &y) {
     return (10*x + y) % 3 == 0;
 }
 
+// Функция возвращает true, если x четное, а y нечетное
 bool f3(const int &x, const int &y) {
     return x % 2 == 0 && y % 2 != 0;
 }
 
-
+// Выводит пары отношений на экран
 void print_relationship(const vector<pair<int, int>> &relationship) {
+    int new_line = 0;
     for (const auto [fst, snd]: relationship) {
-        cout << "(" << fst << ", " << snd << ")" << endl;
+        printf("(%d, %d) \n", fst, snd);
     }
     cout << endl << endl;
 }
 
-
+// Проверяет, содержится ли пара pr в отношениях relationship
 bool include_pair(const vector<pair<int, int>> &relationship, const pair<int, int> &pr) {
     for (const auto [fst, snd]: relationship)
         if (fst == pr.first && snd == pr.second)
@@ -37,7 +42,7 @@ bool include_pair(const vector<pair<int, int>> &relationship, const pair<int, in
     return false;
 }
 
-
+// Проверяет, содержится ли значение val как первый или второй элемент в отношениях relationship
 bool include_value(const vector<pair<int, int>> &relationship, const int val) {
     for (const auto [fst, snd]: relationship)
         if (fst == val || snd == val)
@@ -45,7 +50,7 @@ bool include_value(const vector<pair<int, int>> &relationship, const int val) {
     return false;
 }
 
-
+// Копирует отношения relationship в новый вектор
 vector<pair<int, int>> copy_relationship(const vector<pair<int, int>> &relationship) {
     vector<pair<int, int>> result;
     for (auto [fst, snd]: relationship) {
@@ -56,7 +61,7 @@ vector<pair<int, int>> copy_relationship(const vector<pair<int, int>> &relations
     return result;
 }
 
-
+// Проверяет, что отношения relationship1 нестрого содержатся в relationship2
 bool relationship_not_strictly_include(const vector<pair<int, int>> &relationship1,
                                        const vector<pair<int, int>> &relationship2) {
     for (auto pr: relationship1)
@@ -65,7 +70,7 @@ bool relationship_not_strictly_include(const vector<pair<int, int>> &relationshi
     return true;
 }
 
-
+// Удаляет дубликаты пар в отношениях
 vector<pair<int, int>> dism(const vector<pair<int, int>> &relationship) {
     vector<pair<int, int>> result;
     for (auto v: relationship)
@@ -74,7 +79,7 @@ vector<pair<int, int>> dism(const vector<pair<int, int>> &relationship) {
     return result;
 }
 
-
+// Проверяет, равны ли два отношения
 bool relationship_equal(const vector<pair<int, int>> &relationship1,
                         const vector<pair<int, int>> &relationship2) {
     if (relationship_not_strictly_include(relationship1, relationship2) && \
@@ -83,7 +88,7 @@ bool relationship_equal(const vector<pair<int, int>> &relationship1,
     return false;
 }
 
-
+// Проверяет, содержатся ли отношения relationship1 строго в relationship2
 bool relationship_strictly_include(const vector<pair<int, int>> &relationship1,
                                    const vector<pair<int, int>> &relationship2) {
     if (relationship_not_strictly_include(relationship1, relationship2) && \
@@ -92,7 +97,7 @@ bool relationship_strictly_include(const vector<pair<int, int>> &relationship1,
     return false;
 }
 
-
+// Объединяет два множества отношений
 vector<pair<int, int>> union_relationship(const vector<pair<int, int>> &relationship1,
                                           const vector<pair<int, int>> &relationship2) {
     vector<pair<int, int>> result;
@@ -106,7 +111,7 @@ vector<pair<int, int>> union_relationship(const vector<pair<int, int>> &relation
     return result;
 }
 
-
+// Находит пересечение двух множеств отношений
 vector<pair<int, int>> intersection_relationship(const vector<pair<int, int>> &relationship1,
                                                  const vector<pair<int, int>> &relationship2) {
     vector<pair<int, int>> result;
@@ -117,7 +122,7 @@ vector<pair<int, int>> intersection_relationship(const vector<pair<int, int>> &r
     return result;
 }
 
-
+// Находит разность двух множеств отношений (relationship1 - relationship2)
 vector<pair<int, int>> different_relationship(const vector<pair<int, int>> &relationship1,
                                               const vector<pair<int, int>> &relationship2) {
     vector<pair<int, int>> result;
@@ -128,7 +133,7 @@ vector<pair<int, int>> different_relationship(const vector<pair<int, int>> &rela
     return result;
 }
 
-
+// Находит симметричную разность двух множеств отношений
 vector<pair<int, int>> symmetric_different_relationship(const vector<pair<int, int>> &relationship1,
                                                         const vector<pair<int, int>> &relationship2) {
     vector<pair<int, int>> result;
@@ -143,7 +148,7 @@ vector<pair<int, int>> symmetric_different_relationship(const vector<pair<int, i
     return result;
 }
 
-
+// Находит дополнение отношений к универсальному множеству
 vector<pair<int, int>> complement_relationship(const vector<pair<int, int>> &relationship,
                                                const vector<pair<int, int>> &universum) {
     vector<pair<int, int>> result;
@@ -153,7 +158,7 @@ vector<pair<int, int>> complement_relationship(const vector<pair<int, int>> &rel
     return result;
 }
 
-
+// Возвращает обратные отношения (меняет местами элементы пар)
 vector<pair<int, int>> reverse_relationship(const vector<pair<int, int>> &relationship) {
     vector<pair<int, int>> result;
     for (auto [fst, snd]: relationship) {
@@ -164,7 +169,7 @@ vector<pair<int, int>> reverse_relationship(const vector<pair<int, int>> &relati
     return result;
 }
 
-
+// Композиция двух множеств отношений
 vector<pair<int, int>> compose_relationship(const vector<pair<int, int>> &relationship1,
                                             const vector<pair<int, int>> &relationship2) {
     vector<pair<int, int>> result;
@@ -185,8 +190,8 @@ vector<pair<int, int>> compose_relationship(const vector<pair<int, int>> &relati
     return result;
 }
 
-
-vector<pair<int, int>> degree_relationship(vector<pair<int, int>> relationship, const int degree) {
+// Возводит отношения в степень (композиция отношений несколько раз)
+vector<pair<int, int>> degree_relationship(const vector<pair<int, int>> &relationship, const int degree) {
     if (degree == 1) {
         return relationship;
     }
@@ -203,7 +208,7 @@ vector<pair<int, int>> degree_relationship(vector<pair<int, int>> relationship, 
     return default_value;
 }
 
-
+// Создает матрицу отношений на основе функции f
 vector<vector<int>> create_matrix_relationship(bool (*f)(const int&, const int&)) {
     vector<vector<int>> matrix;
 
@@ -222,7 +227,7 @@ vector<vector<int>> create_matrix_relationship(bool (*f)(const int&, const int&)
     return matrix;
 }
 
-
+// Генерирует отношения в виде набора пар на основе функции f
 vector<pair<int, int>> generate_relationship(bool (*f)(const int&, const int&)) {
     vector<pair<int, int>> result;
     for (int x: m)
@@ -233,7 +238,6 @@ vector<pair<int, int>> generate_relationship(bool (*f)(const int&, const int&)) 
             }
     return result;
 }
-
 
 int main() {
     const vector<pair<int, int>> u = generate_relationship(f);
