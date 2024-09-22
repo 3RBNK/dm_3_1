@@ -240,6 +240,9 @@ vector<pair<int, int> > generate_relationship(bool (*f)(const int &, const int &
 }
 
 
+// Проверяет, является ли отношение рефлексивным.
+// Для каждого элемента множества проверяет наличие пары (i, i) в отношении.
+// Если хотя бы одной пары нет, отношение не рефлексивно.
 bool is_relationship_reflexive(const vector<pair<int, int>> &relationship, const bool print_report) {
     for (int i: m) {
         pair pr = {i, i};
@@ -256,7 +259,9 @@ bool is_relationship_reflexive(const vector<pair<int, int>> &relationship, const
     return true;
 }
 
-
+// Проверяет, является ли отношение антирефлексивным.
+// Для каждого элемента множества проверяет, что пара (i, i) не содержится в отношении.
+// Если хотя бы одна такая пара найдена, отношение не антирефлексивно.
 bool is_relationship_antireflexive(const vector<pair<int, int>> &relationship, const bool print_report) {
     for (int i: m) {
         pair pr = {i, i};
@@ -273,11 +278,13 @@ bool is_relationship_antireflexive(const vector<pair<int, int>> &relationship, c
     return true;
 }
 
-
+// Проверяет, является ли отношение симметричным.
+// Для каждой пары (i, j) проверяет, что если (i, j) содержится в отношении, то (j, i) также содержится.
+// Если хотя бы одна такая пара не найдена, отношение не симметрично.
 bool is_relationship_symmetric(const vector<pair<int, int>> &relationship, const bool print_report) {
     for (int i: m) {
         for (int j: m) {
-            if (i ==j)
+            if (i == j)
                 continue;
 
             pair pr1 = {i, j};
@@ -296,7 +303,9 @@ bool is_relationship_symmetric(const vector<pair<int, int>> &relationship, const
     return true;
 }
 
-
+// Проверяет, является ли отношение антисимметричным.
+// Для каждой пары (i, j) проверяет, что если (i, j) и (j, i) обе содержатся в отношении, то i должно быть равно j.
+// Если найдена хотя бы одна пара, нарушающая это условие, отношение не антисимметрично.
 bool is_relationship_antisymmetric(const vector<pair<int, int>> &relationship, const bool print_report) {
     for (int i: m) {
         for (int j: m) {
@@ -319,15 +328,21 @@ bool is_relationship_antisymmetric(const vector<pair<int, int>> &relationship, c
     return true;
 }
 
-
+// Проверяет, является ли отношение транзитивным.
+// Для каждой тройки элементов (i, j, k) проверяет, что если (i, k) и (k, j) содержатся в отношении, то (i, j) также должно принадлежать отношению.
+// Если хотя бы одна пара нарушает это условие, отношение не транзитивно.
 bool is_relationship_transitive(const vector<pair<int, int>> &relationship, const bool print_report) {
-    for (const auto &[i, j1] : relationship) {
-        for (const auto &[j2, k] : relationship) {
-            if (j1 == j2) {
-                if (!include_pair(relationship, {i, k})) {
+    for (auto i: m) {
+        for (auto j: m) {
+            for (auto k: m) {
+                pair pr1 = {i, k};
+                pair pr2 = {k, j};
+                pair pr3 = {i, j};
+
+                if (include_pair(relationship, pr1) && include_pair(relationship, pr2) && !include_pair(relationship, pr3)) {
                     if (print_report)
-                        printf("Отношение не транзитивно потому, что пара (%d, %d) принадлежит отношению, пара (%d, %d) принадлежит отношению, а пара (%d, %d) не принадлежит отношению \n", i, j1, j2, k, i, k);
-                    return false;
+                         printf("Отношение не транзитивно потому, что пара (%d, %d) принадлежит отношению, пара (%d, %d) принадлежит отношению, а пара (%d, %d) не принадлежит отношению \n", pr1.first, pr1.second, pr2.first, pr2.second, pr3.first, pr3.second);
+                     return false;
                 }
             }
         }
@@ -337,16 +352,23 @@ bool is_relationship_transitive(const vector<pair<int, int>> &relationship, cons
     return true;
 }
 
-
+// Проверяет, является ли отношение антитранзитивным.
+// Для каждой тройки элементов (i, j, k) проверяет, что если (i, k) и (k, j) содержатся в отношении, то (i, j) не должно принадлежать отношению.
+// Если найдена хотя бы одна пара, нарушающая это условие, отношение не антитранзитивно.
 bool is_relationship_antitransitive(const vector<pair<int, int>> &relationship, const bool print_report) {
-    for (const auto &[i, j1] : relationship) {
-        for (const auto &[j2, k] : relationship) {
-            if (j1 == j2) {
-                if (include_pair(relationship, {i, k})) {
-                    if (print_report)
-                        printf("Отношение не антитранзитивно потому, что пара (%d, %d) принадлежит отношению, пара (%d, %d) принадлежит отношению и пара (%d, %d) тоже принадлжеит отношению\n", i, j1, j2, k, i, k);
-                    return false;
-                }
+    for (auto i: m) {
+        for (auto j: m) {
+            for (auto k: m) {
+                const pair pr1 = {i, k};
+                const pair pr2 = {k, j};
+                const pair pr3 = {i, j};
+
+                if (!include_pair(relationship, pr1) || !include_pair(relationship, pr2) || !include_pair(relationship, pr3)) {
+                     if (print_report)
+                         printf("Отношение не антитранзитивно потому, что пара (%d, %d) принадлежит отношению, пара (%d, %d) принадлежит отношению и пара (%d, %d) тоже принадлжеит отношению\n",\
+                             pr1.first, pr1.second, pr2.first, pr2.second, pr3.first, pr3.second);
+                     return false;
+                 }
             }
         }
     }
@@ -355,8 +377,9 @@ bool is_relationship_antitransitive(const vector<pair<int, int>> &relationship, 
     return true;
 }
 
-
-
+// Проверяет, является ли отношение полным.
+// Для каждого элемента множества проверяет, что для любых двух различных элементов (i, j) в отношении существует либо пара (i, j), либо пара (j, i).
+// Если хотя бы одной такой пары нет, отношение не полно.
 bool is_relationship_complete(const vector<pair<int, int>> &relationship, const bool print_report) {
     for (int i: m) {
         for (int j: m) {
@@ -380,6 +403,9 @@ bool is_relationship_complete(const vector<pair<int, int>> &relationship, const 
 }
 
 
+// Выводит на экран производные свойства отношения.
+// Сначала вычисляются следующие свойства отношения: толерантность, эквивалентность, порядок, нестрогий порядок, строгий порядок, линейный порядок, нестрогий линейный порядок и строгий линейный порядок.
+// Затем выводится информация, обладает ли отношение каждым из этих свойств.
 void print_derived_properties_relationship(const vector<pair<int, int>> &relationship) {
     constexpr bool print_error = false;
     const bool tolerance = is_relationship_reflexive(relationship, print_error) && is_relationship_symmetric(relationship, print_error);
@@ -411,12 +437,12 @@ int main() {
     const vector<pair<int, int> > b = generate_relationship(f2);
     const vector<pair<int, int> > c = generate_relationship(f3);
 
-    // const vector<pair<int, int> > comlement_a = complement_relationship(a, u);
-    // const vector<pair<int, int> > square_c = degree_relationship(c, 2);
-    // const vector<pair<int, int> > compose_a_b = compose_relationship(a, b);
-    // const vector<pair<int, int> > union_compose_and_squre = union_relationship(compose_a_b, square_c);
-    // const vector<pair<int, int> > sym_diff_union_and_complement = symmetric_different_relationship(union_compose_and_squre, comlement_a);
-    // print_relationship(sym_diff_union_and_complement);
+    const vector<pair<int, int> > comlement_a = complement_relationship(a, u);
+    const vector<pair<int, int> > square_c = degree_relationship(c, 2);
+    const vector<pair<int, int> > compose_a_b = compose_relationship(a, b);
+    const vector<pair<int, int> > union_compose_and_squre = union_relationship(compose_a_b, square_c);
+    const vector<pair<int, int> > sym_diff_union_and_complement = symmetric_different_relationship(union_compose_and_squre, comlement_a);
+    print_relationship(sym_diff_union_and_complement);
 
     constexpr bool print_report = true;
 
