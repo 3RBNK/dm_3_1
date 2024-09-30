@@ -335,6 +335,10 @@ bool is_relationship_transitive(const vector<pair<int, int>> &relationship, cons
     for (auto i: m) {
         for (auto j: m) {
             for (auto k: m) {
+                if (i == j && j==k && i==k) {
+                    continue;
+                }
+                
                 pair pr1 = {i, k};
                 pair pr2 = {k, j};
                 pair pr3 = {i, j};
@@ -359,6 +363,10 @@ bool is_relationship_antitransitive(const vector<pair<int, int>> &relationship, 
     for (auto i: m) {
         for (auto j: m) {
             for (auto k: m) {
+                if (i == j && j==k && i==k) {
+                    continue;
+                }
+                
                 const pair pr1 = {i, k};
                 const pair pr2 = {k, j};
                 const pair pr3 = {i, j};
